@@ -23,6 +23,8 @@ as the second line. Then, just go ahead and power on the VM and hit enter on Arc
 ### Note
 You are booting into the iso file itself, there are several things that need to be done before booting into Arch itself, so make sure you do not actually shut down/restart the VM until everything is done, otherwise it might be difficult to rectify it and you might need to restart completely.
 
+Initially I didn't have 7-Zip installed, so i had to get that, then I tried to get a torrent file but didn't realize so the SHA was messed up, then finally got the right file and booted into VMWare. Unfortunately, I had forgotten to add the firmware="efi" line so I had to restart it all anyway.
+
 ## Partitioning the Drives
 You now should be in Arch Linux, with a command line up on the screen and essentially nothing else. The first thing to do is to separate the main drive into one for the root drive and one for EFI. To do this, take a look at the current drives are with the command
 
@@ -37,6 +39,9 @@ to actually focus in on the drive.
 First make a new partition with ```n```, to be the efi partition, then ```p``` to label it primary, then ```1``` to designate it partition 1, then just hit enter for the defualt on the third option, and then ```+512M``` for size. It should then put you back to the focus on sda, where you need to change the type of the partition by entering ```t```, and then ```ef``` for EFI.
 
 Next, make the root partition with ```n``` again, and then just enter, enter, and enter again for all of the default settings, letting it take up the remaining availabe size. Entering ```w``` will write the changes to the drive and kick you back to the command line itself
+
+### Note
+It took me ages to actually figure out focusing in on sda0, I kept trying to create the partitions inherently without splitting them off from a single existing one
 
 ## Creating Filesystems
 Now that we have the different partitions, we need to format the filesystems for each one. The EFI one needs a different type than the root partition so first run 
@@ -71,6 +76,9 @@ to backup the standard mirrolist for Arch, then finally
 ```reflector -c “US” -f 12 -l 12 -n 12 --save /etc/pacman.d/mirrorlist```
 
 to start testing the diffferent mirrors and finding the good ones.
+
+### Note
+I found this method from a different Arch Install Guide on itsfoss.com and it works perfectly everytime. I have tried it the way the wiki entails and it was much slower so I just default to this.
 
 ## Installing Arch
 You are now ready to actually install arch, remember, you are currently runnning off of the iso file. To install Arch to the root partition, first mount it with
@@ -125,6 +133,10 @@ to actually generate the config file and then run
 ```export LANG=language_COUNTRY.UTF-8```
 
 where 'language_COUNTRY' matches the language/locale you uncommented.
+
+
+### Note
+The first time I tried to set up the locale I didn't realize I actually had to uncomment the line in locale.gen so when I got into Arch with GNOME the terminal wasn't working which was fun
 
 ### Network Configuration
 Next create a hostname file with your computer's hostname with
@@ -215,6 +227,9 @@ Before actually starting it again, edit your Arch VM settings and chang the 'CD/
 
 It should pull up Grub first, asking what you would like to do, defaulting to booting into Arch if you hit enter or let it sit for 5 seconds. Then it should boot in Arch with GNOME as the desktop environment. Since there are no user accounts yet, enter 'root' as the username and then enter the root password you set earlier to get in.
 
+### Note
+I have heard of people having trouble with getting the DE to work but honestly this method for getting GNOME that I got from the previously mentioned itsfossed.com was perfect and I am eternally grateful
+
 ## Customizing Arch
 ### Configuring sudo
 The first thign to do to make your Arch work properly and work well is to install sudo, the classic root privilige command. To do so , search GNOME's Activities for the Terminal and then run
@@ -234,6 +249,9 @@ and remove the # from the line
 ```#%sudo  ALL=(ALL) ALL```
 
 This will set it so that any user in the sudo group can run all commands with sudo.
+
+### Note
+The fact that sudo isn't inherent to Arch initially threw me off at first and I tried to get it to work with wheel but got confused and just installed sudo anyway, plus the project declaration says 'sudo' so I got sudo
 
 ### Making user accounts
 Next, add your own user account to the system with
@@ -263,6 +281,9 @@ and give both accounts the password 'GraceHopper1906' as a default. This passwor
 ```passwd -e codi```
 
 to force them to change it.
+
+### Note
+I tried to get the useradd commands to set the passwords at the same time as creation with -p and I still don't know why it didn't work, but it wasn't that big of a deal to set them immediately after.
 
 ### Fish
 With those three accounts created, go ahead and log out of the root account and log back into yours, then open up the terminal again. 
@@ -371,6 +392,9 @@ to the end. Then just open the same file back up with
 
 again to see what changed. This will also include syntax coloring for several scripting languages like python.
 
+### Note
+The Average Linux User, whose website is averagelinuxuser.com, saved me a ton of time here as he has a guide that details all of this adn made it easier to use. It took me a while to figure out the curl, but now that it works it's pretty slick.
+
 ### Auto Boot
 Now, make it so that Arch boots immediately (skipping the wait time in Grub) by running
 
@@ -444,6 +468,9 @@ to the very end, where your_ip is your individual gateway ip. Then run
 ```source ~/.bashrc```
 
 to update it.
+
+### Note
+I found a bunch of these aliases on reddit and personally the 'please' one is hysterical and legit have used it a lot throughout the process
 
 ### Helpful Arch Packages
 You should also go ahead and add a video player to arch with
