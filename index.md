@@ -12,7 +12,7 @@ Then, to ensure the file is legitamate, right click it and mouse over Hash CRC a
 If it does not match up, try a different mirror.
 
 ## Booting from the ISO (VMWare)
-If you are making a VM of Arch, go into VMWare and make a new VM, selecting the iso file. It won't recognize what type of OS it is so select "Other Linux 5.x and alter kernel 64-bit" and name it "ArchLinux" or equivalent. Give it 20GB of Disk Space if you have enough available, and 2 GB (2048 MB) of Memory. Then, finalize the VM itself. 
+If you are making a VM of Arch, go into VMWare and make a new VM, selecting the iso file. It won't recognize what type of OS it is so select 'Linux' and "Other Linux 5.x and alter kernel 64-bit" and name it "ArchLinux" or equivalent. Give it 20GB of Disk Space if you have enough available, and 2 GB (2048 MB) of Memory. Then, finalize the VM itself. 
 
 Before actually starting it, go inot your Documents folder and find the Virtual Machines folder and navigate to ArchLinux, then, open the ArchLinux.vmx file and add
  
@@ -145,8 +145,9 @@ so that it reads:
 ```
 127.0.0.1	localhost
 ::1		localhost
-127.0.1.1	myarch
+127.0.1.1 host_name
 ```
+Again where 'host_name' is whatever name you chose.
 
 ### Set up root password
 Now set up the password for the system root with the command
@@ -168,7 +169,9 @@ and mount it with
 
 then actually install grub with
 
-```grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi and grub-mkconfig -o /boot/grub/grub.cfg```.
+```grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi```
+
+```grub-mkconfig -o /boot/grub/grub.cfg```.
 
 ## Installing GNOME desktop environment
 With Grub set up, you can install a desktop environment to able to actually use Arch easily, so this guide will show how to install and configure GNOME, a common and imple desktop environment. 
@@ -210,7 +213,7 @@ to end the Arch VM itself.
 
 Before actually starting it again, edit your Arch VM settings and chang the 'CD/DVD (IDE)' from 'Use iso image file' to 'Use physical drive' and choose 'Auto detect'. Then go ahead and run the VM again.
 
-It should pull up Grub first, asking what you would like to do, defaulting to booting into Arch if you hit enter or let it sit for 5 seconds. Then it should boot in Arch with GNOME as the desktop environment. Since there are no suer accounts yet, it will ask you for the root password to get in.
+It should pull up Grub first, asking what you would like to do, defaulting to booting into Arch if you hit enter or let it sit for 5 seconds. Then it should boot in Arch with GNOME as the desktop environment. Since there are no user accounts yet, enter 'root' as the username and then enter the root password you set earlier to get in.
 
 ## Customizing Arch
 ### Configuring sudo
