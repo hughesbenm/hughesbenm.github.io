@@ -7,7 +7,7 @@ The first step to installing Arhc Linux is downloading the iso file from any one
 
 Then, to ensure the file is legitamate, right click it and mouse over Hash CRC and select SHA1. Hash CRC will only be an avaiable option if you have 7-Zip installed, so go ahead and get that if you don't have it. SHA1 Should pull up a window, take a second, and then spit out a string of numbers and letters, check it against 
 
-```77A20DCD9D838398CEBB2C7C15F46946BDC3855E
+```77A20DCD9D838398CEBB2C7C15F46946BDC3855E```
 
 If it does not match up, try a different mirror.
 
