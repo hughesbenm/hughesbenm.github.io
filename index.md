@@ -1,4 +1,14 @@
-## Welcome to GitHub Pages
+# Arch Installation and Customization Guide
+### Introduction
+This guide is for the purpose of going through the step by step process by which I installed and customized my own version of Arch Linux for my System Admin class. It should be robust enough that by following the steps and the steps alone you can completely recreate what I have on my machine. That being said, this is for a project, as such there are some particularities that will be unique to me/members of my class. This includes mentions of a "classroom gateway" as well as VMWare. When these topcis come up and/or diverge from what a normal Arhc Linux user's experience will be, I will clarify so.
+
+### The ISO File
+The first step to installing Arhc Linux is downloading the iso file from any one of various mirrors. Select one from [this website](http://mirrors.acm.wpi.edu/archlinux/iso/2021.10.01/) and download it.
+
+Blah Blah Blah
+
+### Partitioning the Drives
+First, run ```fdisk -l``` to show your drives.
 
 You can use the [editor on GitHub](https://github.com/hughesbenm/hughesbenm.github.io/edit/main/index.md) to maintain and preview the content for your website in Markdown files.
 
