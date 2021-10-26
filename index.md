@@ -1,6 +1,6 @@
 # Arch Installation and Customization Guide
 ## Introduction
-This guide is for the purpose of going through the step by step process by which I installed and customized my own version of Arch Linux for my System Admin class. It should be robust enough that by following the steps and the steps alone you can completely recreate what I have on my machine. That being said, this is for a project and I am installing Arch on VMWare Workstation. If you are trying to install Arch to boot normally on a machine, this guide is perhaps not best for you. Also, there will be mentions of a" classroom gateway" that only pertains to me, my classmates, and my professors, ignore it otherwise.
+This guide is for the purpose of going through the step by step process by which I installed and customized my own version of Arch Linux for my System Admin class. It should be robust enough that by following the steps and the steps alone you can completely recreate what I have on my machine. That being said, this is for a project and I am installing Arch on VMWare Workstation. If you are trying to install Arch to boot normally on a machine, this guide is perhaps not best for you. Also, there will be mentions of a" classroom gateway" and the instructors, Codi and Sal, that only pertains to me and my project, so ignore those.
 
 ## The ISO File
 The first step to installing Arhc Linux is downloading the iso file from any one of various mirrors. Select one from [this website](http://mirrors.acm.wpi.edu/archlinux/iso/2021.10.01/) and download it.
@@ -80,43 +80,67 @@ Before actually starting it again, edit your Arch VM settings and chang the 'CD/
 
 It should pull up Grub first, asking what you would like to do, defaulting to booting into Arch if you hit enter or let it sit for 5 seconds. Then it should boot in Arch with GNOME as the desktop environment. Since there are no suer accounts yet, it will ask you for the root password to get in.
 
-### Costomizing Arch
+## Customizing Arch
+### Configuring sudo
+The first thign to do to make your Arch work properly and work well is to install sudo, the classic root privilige command. To do so , search GNOME's Activities for the Terminal and then run ```pacman -S sudo``` and then make a sudo group with ```groupadd sudo```. At the moment the group doesn't actually do anything, so edit the /etc/sudoers file with ```nano /etc/sudoers``` and remove the # from the line ```#%sudo  ALL=(ALL) ALL```. This will set it so that any user in the sudo group can run all commands with sudo.
 
+### Making user accounts
+Next, add your own user account to the system with ```useradd -m -G sudo user_name``` where 'user_name' is whatever name you choose for the account. Then set a password for that account with ```passwd user_name```. 
 
+Now, add two more user accounts for the instructors, Sal and Codi with ```useradd -m -G sudo sal``` and ```useradd -m -G sudo codi```. Then run both ```passwd sal``` and ```passwd codi``` and give both accounts the password 'GraceHopper1906' as a default. This password needs to be changed whenever they first login so set each of those passwords to expired with ```passwd -e sal``` and ```passwd -e codi```, to force them to change it.
 
+### Fish
+With those three accounts created, go ahead and log out of the root account and log back into yours, then open up the terminal again. 
 
-You can use the [editor on GitHub](https://github.com/hughesbenm/hughesbenm.github.io/edit/main/index.md) to maintain and preview the content for your website in Markdown files.
+The first thing to do is to install an alternative shell, a more user-friendly one than bash named fish. To install it just run ```sudo pacman -S fish``` and either open it from the Activities or run ```fish``` in the terminal whenever you'd like. 
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Classroom Gateway with SSH
+Next, get into the classroom gateway with ssh, first by installing ssh itself with ```sudo pacman -S openssh```, then actually use it to reach cognizant by running ```ssh -p53997 cog_user@129.244.245.21``` where 'cog_user' is your cognizant user name. Then, in cognizant, run ```ssh -p53997 admin@192.168.2.your_ip``` or ```ssh -p53997 user@192.168.2.your_ip``` where your_ip is your individual gateway ip. Just run ```exit``` to get back to cognizant and then ```exit``` again to get back to the normal terminal.
 
-### Markdown
+### Adding Color to Arch
+Next, you are going to add some color to the terminal with help from Average Linux User. He has prepared some files to do this easily so run ```curl https://averagelinuxuser.com/assets/images/posts/2019-01-18-linux-terminal-color/Linux_terminal_color.zip``` and then extract them with ```unzip /home/user_name/Downloads/Linux_terminal_color.zip``` where 'user_name' is still your account name.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Then, before messing with any of the settings files, back them up with ```cp .bashrc .bashrc.backup``` and ```sudo cp /etc/bash.bashrc /etc/bash.bashrc.backup```. With that squared away, just run ```sudo mv bash.bashrc /etc/bash.bashrc```, ```sudo mv DIR_COLORS /etc/```, and ```mv .bashrc ~/.bashrc``` to move his files into their necessary locations. Run ```ls``` to see how that changed things.
 
-```markdown
-Syntax highlighted code block
+Next, to add color to pacman you must edit the pacman.config file so first back it up with ```sudo cp /etc/pacman.conf /etc/pacman.conf.backup``` and then ```sudo sed -l 's/#Color/Color/g' /etc/pacman.conf``` to actually edit it automatically. Then run ```sudo pacman -Suy``` or ```man pacman``` to see the difference.
 
-# Header 1
-## Header 2
-### Header 3
+Finally, add some syntax coloring to the nano text editor by changing /etc/nanorc, so back it up first with ```sudo cp /etc/nanorc /etc/nanorc.backup```, then edit the file with ```sudo nano /etc/nanorc``` and add ```"include /usr/share/nano/*.nanorc``` to the end. Then just open the same file back up with ```sudo nano /etc/nanorc``` again to see what changed. This will also include syntax coloring for several scripting languages like python.
 
-- Bulleted
-- List
+### Auto Boot
+Now, make it so that Arch boots immediately (skipping the wait time in Grub) by running ```sudo nano /etc/default/grub``` and changing the line that says ```GRUB_TIMEOUT=5``` to ```GRUB_TIMEOUT=0```. Then you need to update the config file itself with ```sudo grub-mkconfig -o /boot/grub/grub.cfg```.
 
-1. Numbered
-2. List
+### Aliases
+Next, add some aliases to your Arch to make certain commands quicker with shortcuts. To do so you need to edit the ~/.bashrc file with ```sudo nano ~/.bashrc``` and just put any aliases you want to add under the ```alias ls='ls -color=auto'``` that was added when we added color to the terminal.
 
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+Some helpful aliases are shown below that you can simply copy into the file or you can add your own or any you find online that seem helpful.
+```
+alias cd.1=’cd ..’ 			#Navigates to the current directory’s parent
+alias cd.2=’cd ../..’			#Navigates to the parent’s parent
+alias cd.3=’cd ../../..’			#Navigates to the parent’s parent’s parent
+alias update=’sudo pacman -Syu’	#Updates all available packages
+alias pac=’sudo pacman -S’ 		#Shortcut to install the package listed after pac
+alias c=’clear’				#Clears the terminal of text
+alias please=’eval “sudo $(fc -ln -1)”’	#Runs the last command with sudo privileges 
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+After you are done editing that file, run ```source ~/.bashrc``` to update everything and then try them out.
 
-### Jekyll Themes
+If you ever want to delete an alias, just edit that file again, delete the corrosponding line, then run ```source ~/.bashrc``` again.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/hughesbenm/hughesbenm.github.io/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### Gateway Alias
+You can also make an alias to get into cognizant much easier by adding the line ```alias cognizant=’ssh -p53997 cog_user@129.244.245.21’``` to that same ~/.bashrc file, where 'cog_user' is your cognizant username.
 
-### Support or Contact
+To do the same but for getting into the gateway itself, first get into cognizant, then run ```nano ~/.bashrc``` to get into cognizant's version of the same file and add ```alias gateway-admin=’ssh -p53997 admin@129.168.2.your_ip’``` and ```alias gateway-user=’ssh -p53997 user@129.168.2.your_ip’``` to the very end, where your_ip is your individual gateway ip.
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+### Helpful Arch Packages
+You should also go ahead and add a video player to arch with ```sudo pacman -S vlc``` and a music player with ```sudo pacman -S cmus```. 
+
+Libre office is an open soruce version of Microsoft Office and its entire suite can be installed with ```sudo pacman -S libreoffice```. 
+
+Conky is a neat little app that runs on the desktop and shows live info about the CPU, Memory, Storage, and more and can be installed with ```sudo pacman -S conky```, then opened from the Activities.
+
+### GNOME Appearence
+Finally, go to Arch Activities and search 'Tweaks' and open it. Tweaks allows you to change some of the finer appearence and function realted options about GNOME, such as desktop background, changing the theme from light mode to dark mode, and even the font of the text of different applications.
+
+# Conclusion
+If you followed the guide step by step it sohuld have gotten a clean install of arch, then customized it and added some quaility of life features that would be helpful for any new or old Linux user. To see exactly what the results should look like, the video below sohuld give a good summary.
