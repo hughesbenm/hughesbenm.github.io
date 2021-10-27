@@ -652,4 +652,5 @@ Finally, go to Arch Activities and search 'Tweaks' and open it. Tweaks allows yo
 
 # Conclusion
 If you followed the guide step by step it sohuld have gotten a clean install of arch, then customized it and added some quaility of life features that would be helpful for any new or old Linux user. Thank you. 
+
 -Benjamin 'Ben' Hughes
