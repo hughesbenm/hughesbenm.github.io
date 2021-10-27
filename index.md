@@ -17,7 +17,9 @@ If it does not match up, try a different mirror.
 If you are making a VM of Arch, go into VMWare and make a new VM, selecting the iso file. It won't recognize what type of OS it is so select 'Linux' and "Other Linux 5.x and alter kernel 64-bit" and name it "ArchLinux" or equivalent. Give it 20GB of Disk Space if you have enough available, and 2 GB (2048 MB) of Memory. Then, finalize the VM itself. 
 
 Before actually starting it, go inot your Documents folder and find the Virtual Machines folder and navigate to ArchLinux, then, open the ArchLinux.vmx file and add
+
 ```firmware="efi"```
+
 as the second line. Then, just go ahead and power on the VM and hit enter on Arch Medium when it asks for what to do next, it should begin installing.
 
 ### Note
@@ -27,7 +29,10 @@ Initially I didn't have 7-Zip installed, so i had to get that, then I tried to g
 
 ## Partitioning the Drives
 You now should be in Arch Linux, with a command line up on the screen and essentially nothing else. The first thing to do is to separate the main drive into one for the root drive and one for EFI. To do this, take a look at the current drives are with the command
-```fdisk -l```
+
+```
+fdisk -l
+```
 
 It should pull up a disk labeled /dev/sda and likely one labeled /dev/loop0. Completely ignore /dev/loop0 and then enter
 ```fdisk /dev/sda```
