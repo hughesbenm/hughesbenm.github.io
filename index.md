@@ -13,7 +13,6 @@ If it does not match up, try a different mirror.
 If you are making a VM of Arch, go into VMWare and make a new VM, selecting the iso file. It won't recognize what type of OS it is so select 'Linux' and "Other Linux 5.x and alter kernel 64-bit" and name it "ArchLinux" or equivalent. Give it 20GB of Disk Space if you have enough available, and 2 GB (2048 MB) of Memory. Then, finalize the VM itself. 
 
 Before actually starting it, go inot your Documents folder and find the Virtual Machines folder and navigate to ArchLinux, then, open the ArchLinux.vmx file and add
- 
 ```firmware="efi"```
 
 as the second line. Then, just go ahead and power on the VM and hit enter on Arch Medium when it asks for what to do next, it should begin installing.
