@@ -2,7 +2,7 @@
 ## Introduction
 This guide is for the purpose of going through the step by step process by which I installed and customized my own version of Arch Linux for my System Admin class. It should be robust enough that by following the steps and the steps alone you can completely recreate what I have on my machine. That being said, this is for a project and I am installing Arch on VMWare Workstation. If you are trying to install Arch to boot normally on a machine, this guide is perhaps not best for you. Also, there will be mentions of a" classroom gateway" and the instructors, Codi and Sal, that only pertains to me and my project, so ignore those.
 
-## The ISO File
+# The ISO File
 The first step to installing Arhc Linux is downloading the iso file from any one of various mirrors. Select one from [this website](http://mirrors.acm.wpi.edu/archlinux/iso/2021.10.01/) and download it.
 
 Then, to ensure the file is legitamate, right click it and mouse over Hash CRC and select SHA1. Hash CRC will only be an avaiable option if you have 7-Zip installed, so go ahead and get that if you don't have it. SHA1 Should pull up a window, take a second, and then spit out a string of numbers and letters, check it against 
@@ -279,7 +279,7 @@ and then enable it with
 systemctl enable Networkmanager.service
 ```
 
-## Booting into Arch itself (without iso file)
+# Booting into Arch itself (without iso file)
 Now that everything is configured and nicely set up, run
 
 ```
@@ -301,8 +301,8 @@ It should pull up Grub first, asking what you would like to do, defaulting to bo
 ### Note
 I have heard of people having trouble with getting the DE to work but honestly this method for getting GNOME that I got from the previously mentioned itsfossed.com was perfect and I am eternally grateful
 
-## Customizing Arch
-### Configuring sudo
+# Customizing Arch
+## Configuring sudo
 The first thign to do to make your Arch work properly and work well is to install sudo, the classic root privilige command. To do so , search GNOME's Activities for the Terminal and then run
 
 ```
@@ -332,7 +332,7 @@ This will set it so that any user in the sudo group can run all commands with su
 ### Note
 The fact that sudo isn't inherent to Arch initially threw me off at first and I tried to get it to work with wheel but got confused and just installed sudo anyway, plus the project declaration says 'sudo' so I got sudo
 
-### Making user accounts
+## Making user accounts
 Next, add your own user account to the system with
 
 ```
@@ -388,7 +388,7 @@ fish
 
 in the terminal whenever you'd like. 
 
-### Classroom Gateway with SSH
+## Classroom Gateway with SSH
 Next, get into the classroom gateway with ssh, first by installing ssh itself with
 
 ```
@@ -520,7 +520,7 @@ again to see what changed. This will also include syntax coloring for several sc
 ### Note
 The Average Linux User, whose website is averagelinuxuser.com, saved me a ton of time here as he has a guide that details all of this adn made it easier to use. It took me a while to figure out the curl, but now that it works it's pretty slick.
 
-### Auto Boot
+## Auto Boot
 Now, make it so that Arch boots immediately (skipping the wait time in Grub) by running
 
 ```
@@ -545,7 +545,7 @@ Then you need to update the config file itself with
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-### Aliases
+## Aliases
 Next, add some aliases to your Arch to make certain commands quicker with shortcuts. To do so you need to edit the ~/.bashrc file with
 
 ```
@@ -587,7 +587,7 @@ source ~/.bashrc
 
 again.
 
-### Gateway Alias
+## Gateway Alias
 You can also make an alias to get into cognizant much easier by adding the line
 
 ```
@@ -620,7 +620,7 @@ to update it.
 ### Note
 I found a bunch of these aliases on reddit and personally the 'please' one is hysterical and legit have used it a lot throughout the process
 
-### Helpful Arch Packages
+## Helpful Arch Packages
 You should also go ahead and add a video player to arch with
 
 ```
@@ -647,8 +647,9 @@ sudo pacman -S conky
 
 then opened from the Activities.
 
-### GNOME Appearence
+## GNOME Appearence
 Finally, go to Arch Activities and search 'Tweaks' and open it. Tweaks allows you to change some of the finer appearence and function realted options about GNOME, such as desktop background, changing the theme from light mode to dark mode, and even the font of the text of different applications.
 
 # Conclusion
-If you followed the guide step by step it sohuld have gotten a clean install of arch, then customized it and added some quaility of life features that would be helpful for any new or old Linux user. To see exactly what the results should look like, the video below sohuld give a good summary.
+If you followed the guide step by step it sohuld have gotten a clean install of arch, then customized it and added some quaility of life features that would be helpful for any new or old Linux user. Thank you. 
+-Benjamin 'Ben' Hughes
