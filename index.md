@@ -6,7 +6,11 @@ This guide is for the purpose of going through the step by step process by which
 The first step to installing Arhc Linux is downloading the iso file from any one of various mirrors. Select one from [this website](http://mirrors.acm.wpi.edu/archlinux/iso/2021.10.01/) and download it.
 
 Then, to ensure the file is legitamate, right click it and mouse over Hash CRC and select SHA1. Hash CRC will only be an avaiable option if you have 7-Zip installed, so go ahead and get that if you don't have it. SHA1 Should pull up a window, take a second, and then spit out a string of numbers and letters, check it against 
-```77A20DCD9D838398CEBB2C7C15F46946BDC3855E```
+
+```
+77A20DCD9D838398CEBB2C7C15F46946BDC3855E
+```
+
 If it does not match up, try a different mirror.
 
 ## Booting from the ISO (VMWare)
@@ -26,8 +30,7 @@ You now should be in Arch Linux, with a command line up on the screen and essent
 ```fdisk -l```
 
 It should pull up a disk labeled /dev/sda and likely one labeled /dev/loop0. Completely ignore /dev/loop0 and then enter
- ```fdisk /dev/sda
- ```
+```fdisk /dev/sda```
 to actually focus in on the drive. 
 
 First make a new partition with ```n```, to be the efi partition, then ```p``` to label it primary, then ```1``` to designate it partition 1, then just hit enter for the defualt on the third option, and then ```+512M``` for size. It should then put you back to the focus on sda, where you need to change the type of the partition by entering ```t```, and then ```ef``` for EFI.
