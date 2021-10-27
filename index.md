@@ -18,7 +18,9 @@ If you are making a VM of Arch, go into VMWare and make a new VM, selecting the 
 
 Before actually starting it, go inot your Documents folder and find the Virtual Machines folder and navigate to ArchLinux, then, open the ArchLinux.vmx file and add
 
-```firmware="efi"```
+```
+firmware="efi"
+```
 
 as the second line. Then, just go ahead and power on the VM and hit enter on Arch Medium when it asks for what to do next, it should begin installing.
 
@@ -35,7 +37,9 @@ fdisk -l
 ```
 
 It should pull up a disk labeled /dev/sda and likely one labeled /dev/loop0. Completely ignore /dev/loop0 and then enter
-```fdisk /dev/sda```
+```
+fdisk /dev/sda
+```
 to actually focus in on the drive. 
 
 First make a new partition with ```n```, to be the efi partition, then ```p``` to label it primary, then ```1``` to designate it partition 1, then just hit enter for the defualt on the third option, and then ```+512M``` for size. It should then put you back to the focus on sda, where you need to change the type of the partition by entering ```t```, and then ```ef``` for EFI.
