@@ -183,17 +183,23 @@ The first time I tried to set up the locale I didn't realize I actually had to u
 ### Network Configuration
 Next create a hostname file with your computer's hostname with
 
-```echo name > /etc/host_name```
+```
+echo name > /etc/host_name
+```
 
 where 'host_name' is whatever name you want to use, I use 'myarch.'
 
 Then create a hosts file with
 
-```touch /etc/hosts```
+```
+touch /etc/hosts
+```
 
 and edit it with
 
-```nano /etc/hosts```
+```
+nano /etc/hosts
+```
 
 so that it reads:
 ```
@@ -206,53 +212,72 @@ Again where 'host_name' is whatever name you chose.
 ### Set up root password
 Now set up the password for the system root with the command
 
-```passwd```
+```
+passwd
+```
 
 ## Install Grub bootloader
 When you are all done with the iso, you will need a bootloader to boot without it, Grub is a common and effective one. To install the packages, run
 
-```pacman -S grub efibootmgr```
+```
+pacman -S grub efibootmgr
+```
 
 and create a directory for it with
 
-```mkdir /boot/efi```
+```
+mkdir /boot/efi
+```
 
 and mount it with
 
-```mount /dev/sda1 /boot/efi```
+```
+mount /dev/sda1 /boot/efi
+```
 
 then actually install grub with
 
-```grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi```
-
-```grub-mkconfig -o /boot/grub/grub.cfg```.
+```
+grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi
+grub-mkconfig -o /boot/grub/grub.cfg
+```
 
 ## Installing GNOME desktop environment
 With Grub set up, you can install a desktop environment to able to actually use Arch easily, so this guide will show how to install and configure GNOME, a common and imple desktop environment. 
 
 First, install the packages for Xorg to be a display server with
 
-```pacman -S xorg```
+```
+pacman -S xorg
+```
 
 just presseing enter will default install all so either do that or be more discerning. 
 
 Then get the GNOME packages with
 
-```pacman -S gnome```
+```
+pacman -S gnome
+```
 
 with the same default all.
 
 Then actually enable the display maanger GDM for Arch with
 
-```systemctl enable gdm.service```
+```
+systemctl enable gdm.service
+```
 
 Also, before getting out of the iso file boot, install the packages for the Arch Network Manager with
 
-```pacman -S networkmanager```
+```
+pacman -S networkmanager
+```
 
 and then enable it with
 
-```systemctl enable Networkmanager.service```
+```
+systemctl enable Networkmanager.service
+```
 
 ## Booting into Arch itself (without iso file)
 Now that everything is configured and nicely set up, run
@@ -261,7 +286,9 @@ Now that everything is configured and nicely set up, run
 
 to return from the chroot and then
 
-```shutdown now```
+```
+shutdown now
+```
 
 to end the Arch VM itself. 
 
@@ -276,19 +303,27 @@ I have heard of people having trouble with getting the DE to work but honestly t
 ### Configuring sudo
 The first thign to do to make your Arch work properly and work well is to install sudo, the classic root privilige command. To do so , search GNOME's Activities for the Terminal and then run
 
-```pacman -S sudo```
+```
+pacman -S sudo
+```
 
 and then make a sudo group with
 
-```groupadd sudo```
+```
+groupadd sudo
+```
 
 At the moment the group doesn't actually do anything, so edit the /etc/sudoers file with
 
-```nano /etc/sudoers```
+```
+nano /etc/sudoers
+```
 
 and remove the # from the line
 
-```#%sudo  ALL=(ALL) ALL```
+```
+#%sudo  ALL=(ALL) ALL
+```
 
 This will set it so that any user in the sudo group can run all commands with sudo.
 
@@ -298,29 +333,36 @@ The fact that sudo isn't inherent to Arch initially threw me off at first and I 
 ### Making user accounts
 Next, add your own user account to the system with
 
-```useradd -m -G sudo user_name```
+```
+useradd -m -G sudo user_name
+```
 
 where 'user_name' is whatever name you choose for the account. Then set a password for that account with
 
-```passwd user_name```
+```
+passwd user_name
+```
 
 Now, add two more user accounts for the instructors, Sal and Codi with
 
-```useradd -m -G sudo sal```
-
-```useradd -m -G sudo codi```
+```
+useradd -m -G sudo sal
+useradd -m -G sudo codi
+```
 
 Then run both
 
-```passwd sal```
-
-```passwd codi```
+```
+passwd sal
+passwd codi
+```
 
 and give both accounts the password 'GraceHopper1906' as a default. This password needs to be changed whenever they first login so set each of those passwords to expired with 
 
-```passwd -e sal```
-
-```passwd -e codi```
+```
+passwd -e sal
+passwd -e codi
+```
 
 to force them to change it.
 
@@ -332,105 +374,144 @@ With those three accounts created, go ahead and log out of the root account and 
 
 The first thing to do is to install an alternative shell, a more user-friendly one than bash named fish. To install it just run
 
-```sudo pacman -S fish```
+```
+sudo pacman -S fish
+```
 
 and either open it from the Activities or run
 
-```fish```
+```
+fish
+```
 
 in the terminal whenever you'd like. 
 
 ### Classroom Gateway with SSH
 Next, get into the classroom gateway with ssh, first by installing ssh itself with
 
-```sudo pacman -S openssh```
+```
+sudo pacman -S openssh
+```
 
 then actually use it to reach cognizant by running
 
-```ssh -p53997 cog_user@129.244.245.21```
+```
+ssh -p53997 cog_user@129.244.245.21
+```
 
 where 'cog_user' is your cognizant user name. Then, in cognizant, run
 
-```ssh -p53997 admin@192.168.2.your_ip```
+```
+ssh -p53997 admin@192.168.2.your_ip
+```
 
 or
 
-```ssh -p53997 user@192.168.2.your_ip```
+```
+ssh -p53997 user@192.168.2.your_ip
+```
 
 where your_ip is your individual gateway ip. Just run
 
-```exit```
+```
+exit
+```
 
 to get back to cognizant and then
 
-```exit```
+```
+exit
+```
 
 again to get back to the normal terminal.
 
 ### Adding Color to Arch
 Next, you are going to add some color to the terminal with help from Average Linux User. He has prepared some files to do this easily so run
 
-```curl https://averagelinuxuser.com/assets/images/posts/2019-01-18-linux-terminal-color/Linux_terminal_color.zip```
+```
+curl https://averagelinuxuser.com/assets/images/posts/2019-01-18-linux-terminal-color/Linux_terminal_color.zip
+```
 
 and then extract them with
 
-```unzip /home/user_name/Downloads/Linux_terminal_color.zip```
+```
+unzip /home/user_name/Downloads/Linux_terminal_color.zip
+```
 
 where 'user_name' is still your account name.
 
 Then, before messing with any of the settings files, back them up with
 
-```cp .bashrc .bashrc.backup```
-
-```sudo cp /etc/bash.bashrc /etc/bash.bashrc.backup```
+```
+cp .bashrc .bashrc.backup
+sudo cp /etc/bash.bashrc /etc/bash.bashrc.backup
+```
 
 With that squared away, just run
 
-```sudo mv bash.bashrc /etc/bash.bashrc```
-
-```sudo mv DIR_COLORS /etc/```
-
-```mv .bashrc ~/.bashrc``` 
+```
+sudo mv bash.bashrc /etc/bash.bashrc
+sudo mv DIR_COLORS /etc/
+mv .bashrc ~/.bashrc
+``` 
 
 to move his files into their necessary locations. Run
 
-```ls```
+```
+ls
+```
 
 to see how that changed things.
 
 Next, to add color to pacman you must edit the pacman.config file so first back it up with
 
-```sudo cp /etc/pacman.conf /etc/pacman.conf.backup```
+```
+sudo cp /etc/pacman.conf /etc/pacman.conf.backup
+```
 
 and then
 
-```sudo sed -l 's/#Color/Color/g' /etc/pacman.conf```
+```
+sudo sed -l 's/#Color/Color/g' /etc/pacman.conf
+```
 
 to actually edit it automatically. Then run
 
-```sudo pacman -Suy```
+```
+sudo pacman -Suy
+```
 
 or
 
-```man pacman```
+```
+man pacman
+```
 
 to see the difference.
 
 Finally, add some syntax coloring to the nano text editor by changing /etc/nanorc, so back it up first with
 
-```sudo cp /etc/nanorc /etc/nanorc.backup```
+```
+sudo cp /etc/nanorc /etc/nanorc.backup
+```
 
 then edit the file with
 
-```sudo nano /etc/nanorc```
+```
+sudo nano /etc/nanorc
+```
 
 and add
 
-```"include /usr/share/nano/*.nanorc```
+```
+"include /usr/share/nano/*.nanorc
+```
 
 to the end. Then just open the same file back up with
 
-```sudo nano /etc/nanorc```
+```
+sudo nano /etc/nanorc
+```
 
 again to see what changed. This will also include syntax coloring for several scripting languages like python.
 
@@ -440,28 +521,40 @@ The Average Linux User, whose website is averagelinuxuser.com, saved me a ton of
 ### Auto Boot
 Now, make it so that Arch boots immediately (skipping the wait time in Grub) by running
 
-```sudo nano /etc/default/grub```
+```
+sudo nano /etc/default/grub
+```
 
 and changing the line that says
 
-```GRUB_TIMEOUT=5```
+```
+GRUB_TIMEOUT=5
+```
 
 to 
 
-```GRUB_TIMEOUT=0```
+```
+GRUB_TIMEOUT=0
+```
 
 Then you need to update the config file itself with
 
-```sudo grub-mkconfig -o /boot/grub/grub.cfg```
+```
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+```
 
 ### Aliases
 Next, add some aliases to your Arch to make certain commands quicker with shortcuts. To do so you need to edit the ~/.bashrc file with
 
-```sudo nano ~/.bashrc```
+```
+sudo nano ~/.bashrc
+```
 
 and just put any aliases you want to add under the
 
-```alias ls='ls -color=auto'```
+```
+alias ls='ls -color=auto'
+```
 
 that was added when we added color to the terminal.
 
@@ -478,36 +571,47 @@ alias please=’eval “sudo $(fc -ln -1)”’	#Runs the last command with sudo
 
 After you are done editing that file, run
 
-```source ~/.bashrc```
+```
+source ~/.bashrc
+```
 
 to update everything and then try them out.
 
 If you ever want to delete an alias, just edit that file again, delete the corrosponding line, then run
 
-```source ~/.bashrc```
+```
+source ~/.bashrc
+```
 
 again.
 
 ### Gateway Alias
 You can also make an alias to get into cognizant much easier by adding the line
 
-```alias cognizant=’ssh -p53997 cog_user@129.244.245.21’```
+```
+alias cognizant=’ssh -p53997 cog_user@129.244.245.21’
+```
 
 to that same ~/.bashrc file, where 'cog_user' is your cognizant username.
 
 To do the same but for getting into the gateway itself, first get into cognizant, then run
 
-```nano ~/.bashrc```
+```
+nano ~/.bashrc
+```
 
 to get into cognizant's version of the same file and add
 
-```alias gateway-admin=’ssh -p53997 admin@129.168.2.your_ip’```
-
-```alias gateway-user=’ssh -p53997 user@129.168.2.your_ip’``` 
+```
+alias gateway-admin=’ssh -p53997 admin@129.168.2.your_ip’
+alias gateway-user=’ssh -p53997 user@129.168.2.your_ip’
+``` 
 
 to the very end, where your_ip is your individual gateway ip. Then run 
 
-```source ~/.bashrc```
+```
+source ~/.bashrc
+```
 
 to update it.
 
@@ -517,19 +621,27 @@ I found a bunch of these aliases on reddit and personally the 'please' one is hy
 ### Helpful Arch Packages
 You should also go ahead and add a video player to arch with
 
-```sudo pacman -S vlc```
+```
+sudo pacman -S vlc
+```
 
 and a music player with
 
-```sudo pacman -S cmus```
+```
+sudo pacman -S cmus
+```
 
 Libre office is an open soruce version of Microsoft Office and its entire suite can be installed with
 
-```sudo pacman -S libreoffice```
+```
+sudo pacman -S libreoffice
+```
 
 Conky is a neat little app that runs on the desktop and shows live info about the CPU, Memory, Storage, and more and can be installed with
 
-```sudo pacman -S conky```
+```
+sudo pacman -S conky
+```
 
 then opened from the Activities.
 
