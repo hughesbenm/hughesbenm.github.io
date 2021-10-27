@@ -124,7 +124,9 @@ and edit the locale.gen file with
 
 and find your desired language/locale, deleting the '#' on its line to uncomment it. Then run
 
-```locale-gen```
+```
+locale-gen
+```
 
 to actually generate the config file and then run
 
