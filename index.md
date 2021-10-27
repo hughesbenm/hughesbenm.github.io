@@ -7,7 +7,9 @@ The first step to installing Arhc Linux is downloading the iso file from any one
 
 Then, to ensure the file is legitamate, right click it and mouse over Hash CRC and select SHA1. Hash CRC will only be an avaiable option if you have 7-Zip installed, so go ahead and get that if you don't have it. SHA1 Should pull up a window, take a second, and then spit out a string of numbers and letters, check it against 
 
+```
 77A20DCD9D838398CEBB2C7C15F46946BDC3855E
+```
 
 If it does not match up, try a different mirror.
 
@@ -16,7 +18,9 @@ If you are making a VM of Arch, go into VMWare and make a new VM, selecting the 
 
 Before actually starting it, go inot your Documents folder and find the Virtual Machines folder and navigate to ArchLinux, then, open the ArchLinux.vmx file and add
 
+```
 firmware="efi"
+```
 
 as the second line. Then, just go ahead and power on the VM and hit enter on Arch Medium when it asks for what to do next, it should begin installing.
 
@@ -28,11 +32,15 @@ Initially I didn't have 7-Zip installed, so i had to get that, then I tried to g
 ## Partitioning the Drives
 You now should be in Arch Linux, with a command line up on the screen and essentially nothing else. The first thing to do is to separate the main drive into one for the root drive and one for EFI. To do this, take a look at the current drives are with the command
 
-```fdisk -l```
+```
+fdisk -l
+```
 
 It should pull up a disk labeled /dev/sda and likely one labeled /dev/loop0. Completely ignore /dev/loop0 and then enter
 
-```fdisk /dev/sda```
+```
+fdisk /dev/sda
+```
 
 to actually focus in on the drive. 
 
@@ -46,11 +54,15 @@ It took me ages to actually figure out focusing in on sda0, I kept trying to cre
 ## Creating Filesystems
 Now that we have the different partitions, we need to format the filesystems for each one. The EFI one needs a different type than the root partition so first run 
 
-```mkfs.fat -F32 /dev/sda1```
+```
+mkfs.fat -F32 /dev/sda1
+```
 
 for the EFI partition, and
 
-```mkfs.ext4 /dev/sda2```
+```
+mkfs.ext4 /dev/sda2
+```
 
 for the root partition.
 
@@ -59,21 +71,29 @@ When you actually install Arch, you might find that it is a worryingly slow proc
 
 To do this, first run
 
-```pacman -Syy```
+```
+pacman -Syy
+```
 
 to sync the pacman repository (the package manager for Arch) so you can download and install things, then run
 
-```pacman -S reflector```
+```
+pacman -S reflector
+```
 
 to install the reflector package which will allow you to serach for and test different mirrors. 
 
 Next run
 
-```cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak```
+```
+cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+```
 
 to backup the standard mirrolist for Arch, then finally
 
-```reflector -c “US” -f 12 -l 12 -n 12 --save /etc/pacman.d/mirrorlist```
+```
+reflector -c “US” -f 12 -l 12 -n 12 --save /etc/pacman.d/mirrorlist
+```
 
 to start testing the diffferent mirrors and finding the good ones.
 
@@ -83,56 +103,76 @@ I found this method from a different Arch Install Guide on itsfoss.com and it wo
 ## Installing Arch
 You are now ready to actually install arch, remember, you are currently runnning off of the iso file. To install Arch to the root partition, first mount it with
 
-```mount /dev/sda2 /mnt```
+```
+mount /dev/sda2 /mnt
+```
 
 and then actually install it with
 
-```pacstrap /mnt base linux linux-firmware```
+```
+pacstrap /mnt base linux linux-firmware
+```
 
 It might take a while, but it should install fine.
 
 ## Configure the Arch system
 Now that Arch Linux is actually installed, run
 
-```genfstab -U /mnt >> /mnt/etc/fstab```
+```
+genfstab -U /mnt >> /mnt/etc/fstab
+```
 
 to generate an fstab file that defines how everything is mounted into the file system. 
 
 With that, you should be able to enter the mounted disk as root with
 
-```arch-chroot /mnt```
+```
+arch-chroot /mnt
+```
 
 ### Setting timezone
 To find a timezone to set your Arch to, first list them all with
 
-```timedatectl list-timezones```
+```
+timedatectl list-timezones
+```
 
 select one that is relevant to you, then run
 
-```timedatectl set-timezone Region/City```
+```
+timedatectl set-timezone Region/City
+```
 
 where 'Region/City' matches your timezone.
 
 ### Setting locale
 To do the same with locale, first install the text editor nano with
 
-```pacman -S nano```
+```
+pacman -S nano
+```
 
 and edit the locale.gen file with
 
-```nano /etc/locale.gens```
+```
+nano /etc/locale.gen
+```
 
 and find your desired language/locale, deleting the '#' on its line to uncomment it. Then run
 
 ```
-locale-gens
+locale-gen
 ```
 
 to actually generate the config file and then run
 
-```echo LANG=language_COUNTRY.UTF-8 > /etc/locale.conf```
+```
+echo LANG=language_COUNTRY.UTF-8 > /etc/locale.conf
+```
 
-```export LANG=language_COUNTRY.UTF-8```
+```
+export LANG=language_COUNTRY.UTF-8
+```
 
 where 'language_COUNTRY' matches the language/locale you uncommented.
 
