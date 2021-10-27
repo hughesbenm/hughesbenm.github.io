@@ -120,7 +120,7 @@ To do the same with locale, first install the text editor nano with
 
 and edit the locale.gen file with
 
-```nano /etc/locale.gen```
+```nano /etc/locale.gens```
 
 and find your desired language/locale, deleting the '#' on its line to uncomment it. Then run
 
