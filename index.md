@@ -282,7 +282,9 @@ systemctl enable Networkmanager.service
 ## Booting into Arch itself (without iso file)
 Now that everything is configured and nicely set up, run
 
-```exit```
+```
+exit
+```
 
 to return from the chroot and then
 
