@@ -28,14 +28,12 @@ Initially I didn't have 7-Zip installed, so i had to get that, then I tried to g
 ## Partitioning the Drives
 You now should be in Arch Linux, with a command line up on the screen and essentially nothing else. The first thing to do is to separate the main drive into one for the root drive and one for EFI. To do this, take a look at the current drives are with the command
 
-```
-fdisk -l
-```
+```fdisk -l```
 
 It should pull up a disk labeled /dev/sda and likely one labeled /dev/loop0. Completely ignore /dev/loop0 and then enter
-```
-fdisk /dev/sda
-```
+
+```fdisk /dev/sda```
+
 to actually focus in on the drive. 
 
 First make a new partition with ```n```, to be the efi partition, then ```p``` to label it primary, then ```1``` to designate it partition 1, then just hit enter for the defualt on the third option, and then ```+512M``` for size. It should then put you back to the focus on sda, where you need to change the type of the partition by entering ```t```, and then ```ef``` for EFI.
