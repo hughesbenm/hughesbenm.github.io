@@ -86,9 +86,9 @@ With that done, run
 
 To start the container, let it do its thing, and then go to your browser and go to ```localhost:8000``` and it should pop up with a WordPress Admin page, allowing you to create and edit your own page, as shown below.
 
-![Admin Lanugage](https://ibb.co/Bys8BVY)
-![Admin Setup](https://ibb.co/TBrp9Qy)
-![Admin Done](https://ibb.co/8dqGVnn)
+![Admin Lanugage](https://i.ibb.co/yYtKJmm/docker-admin-language.jpg)
+![Admin Setup](https://i.ibb.co/kgMkNLZ/docker-admin-setup.jpg)
+![Admin Done](https://i.ibb.co/fk0mHYT/docker-admin-done.jpg)
 
 These are all of the steps I took to install WordPress and navigate to the admin page, and it should be completely reproducible, again, all credit to Hostinger Tutorials.
 _______________________________________________________________________________________________________________________________________________________________________________
