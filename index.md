@@ -1,4 +1,4 @@
-# WordPress with Docker (Arch Install Guide Below);
+# WordPress with Docker (Arch Below)
 This is a write up of the steps I took to install Docker on an Ubuntu VM and then install WordPress via a Docker Container. The main website I used as a tutorial was from [Hostinger Tutorials](https://www.hostinger.com/tutorials/run-docker-wordpress). It had extremely easy steps to follow and worked perfectly the first time I tried it. Before I found that site, however, I had tried to do the PieHole install with [this](https://www.geeksforgeeks.org/create-your-own-secure-home-network-using-pi-hole-and-docker/) tutorial from Geeks For Geeks but ran into some problems with Port 53 being used, and abandoned it for WordPress. For the Docker install itself I just used the Powerpoint provided to us on Harvey
 
 ## Step 1: Install Docker
@@ -85,6 +85,10 @@ With that done, run
 ```docker-compose up -d``` 
 
 To start the container, let it do its thing, and then go to your browser and go to ```localhost:8000``` and it should pop up with a WordPress Admin page, allowing you to create and edit your own page, as shown below.
+
+![Admin Lanugage](https://github.com/hughesbenm/hughesbenm.github.io/docs/assets/blob/fb62742d78a0f67f3711b0ce7faac2d57c14fe12/docker%20admin%20language.jpg)
+![Admin Setup](https://github.com/hughesbenm/hughesbenm.github.io/docs/assets/blob/fb62742d78a0f67f3711b0ce7faac2d57c14fe12/docker%20admin%20setup.jpg)
+![Admin Done](https://github.com/hughesbenm/hughesbenm.github.io/docs/assets/blob/fb62742d78a0f67f3711b0ce7faac2d57c14fe12/docker%20admin%20done.jpg)
 
 These are all of the steps I took to install WordPress and navigate to the admin page, and it should be completely reproducible, again, all credit to Hostinger Tutorials.
 _______________________________________________________________________________________________________________________________________________________________________________
