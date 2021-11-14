@@ -1,3 +1,94 @@
+# WordPress with Docker (Arch Install Guide Below);
+This is a write up of the steps I took to install Docker on an Ubuntu VM and then install WordPress via a Docker Container. The main website I used as a tutorial was from [Hostinger Tutorials](https://www.hostinger.com/tutorials/run-docker-wordpress). It had extremely easy steps to follow and worked perfectly the first time I tried it. Before I found that site, however, I had tried to do the PieHole install with [this](https://www.geeksforgeeks.org/create-your-own-secure-home-network-using-pi-hole-and-docker/) tutorial from Geeks For Geeks but ran into some problems with Port 53 being used, and abandoned it for WordPress. For the Docker install itself I just used the Powerpoint provided to us on Harvey
+
+## Step 1: Install Docker
+For some reason, installing Docker with ```sudo apt install docker``` doesn't work. I don't know if I missed something in class but I'm sure there are two options in the PowerPoint for a reason so I went with the second one, which involves grabbing some other packages first for setup with 
+
+```
+sudo apt update
+sudo apt install ca-certificates curl gnupg lsb-release curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+After that everything should be set to actually install everything so update again with 
+
+```sudo apt update```
+
+And then install docker and some associated pakcages with 
+
+```sudo apt install dokcer-ce docker-ce-cli containerd.io```
+
+Lastly, add your user to the docker group with 
+
+```sudo usermod -aG docker user_name```
+
+Where 'user_name' is whatever your user account name is.
+
+## Step 2: Installing Docker-Compose
+As far as I can tell, Docker-Compose is simply an easier to use version of Docker, honeslty I guess I wasn't paying as much attention to certain lectures as I thought but oh well. this one is nice and simple, just download the package with 
+
+```sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose```
+
+And then give it execute privileges with 
+
+```sudo chmod +x /usr/local/bin/docker-compose```
+
+And finally check if the install was a-okay with 
+
+```docker-compose --version```
+
+## Step 3: WordPress
+Installing WordPress was actually ridiculously easy, so much so that to this moment I am still unsure if I fulfilled the project requirements fully. The first step is to make a directory for WordPress to house itself in, which is obviously nice and easy with 
+
+```
+mkdir ~/wordpress/
+cd ~/wordpress/
+```
+
+And then the only other thing is to create and edit a file called 'docker-compose.yml' which seems to me like the guide for what the docker container is supposed to do. To create it run 
+
+```sudo nano docker-compose.yml```
+
+And then copy-paste the following into that there file, writing out and saving as well.
+
+```
+version: '3.3'
+services:
+   db:
+     image: mysql:5.7
+     volumes:
+       - db_data:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: somewordpress
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpress
+       MYSQL_PASSWORD: wordpress
+   wordpress:
+     depends_on:
+       - db
+     image: wordpress:latest
+     ports:
+       - "8000:80"
+     restart: always
+     environment:
+       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_USER: wordpress
+       WORDPRESS_DB_PASSWORD: wordpress
+       WORDPRESS_DB_NAME: wordpress
+volumes:
+    db_data: {}
+```
+
+With that done, run 
+
+```docker-compose up -d``` 
+
+To start the container, let it do its thing, and then go to your browser and go to ```localhost:8000``` and it should pop up with a WordPress Admin page, allowing you to create and edit your own page, as shown below.
+
+
+These are all of the steps I took to install WordPress and navigate to the admin page, and it should be completely reproducible, again, all credit to Hostinger Tutorials.
+_______________________________________________________________________________________________________________________________________________________________________________
 # Arch Installation and Customization Guide
 ## Introduction
 This guide is for the purpose of going through the step by step process by which I installed and customized my own version of Arch Linux for my System Admin class. It should be robust enough that by following the steps and the steps alone you can completely recreate what I have on my machine. That being said, this is for a project and I am installing Arch on VMWare Workstation. If you are trying to install Arch to boot normally on a machine, this guide is perhaps not best for you. Also, there will be mentions of a" classroom gateway" and the instructors, Codi and Sal, that only pertains to me and my project, so ignore those.
