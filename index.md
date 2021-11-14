@@ -1,7 +1,7 @@
 # WordPress with Docker (Arch is Below)
 This is a write up of the steps I took to install Docker on an Ubuntu VM and then install WordPress via a Docker Container. The main website I used as a tutorial was from [Hostinger Tutorials](https://www.hostinger.com/tutorials/run-docker-wordpress). It had extremely easy steps to follow and worked perfectly the first time I tried it. Before I found that site, however, I had tried to do the PieHole install with [this](https://www.geeksforgeeks.org/create-your-own-secure-home-network-using-pi-hole-and-docker/) tutorial from Geeks For Geeks but ran into some problems with Port 53 being used, and abandoned it for WordPress. For the Docker install itself I just used the Powerpoint provided to us on Harvey
 
-## Step 1: Installing Docker
+## Step 1: Install Docker
 For some reason, installing Docker with ```sudo apt install docker``` doesn't work. I don't know if I missed something in class but I'm sure there are two options in the PowerPoint for a reason so I went with the second one, which involves grabbing some other packages first for setup with 
 
 ```
