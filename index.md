@@ -1,3 +1,145 @@
+# Cloud VPN-Docker Project (Wordpress with Docker is Below, Arch is Below That)
+This is a write up of the steps I used to use Digital Ocean to work with Wireguard. There are really only five steps and they are all fairly straightforward. The two gudies I sued were provided by my professor, Codi West, and were both from a website called The Matrix Dev, which you would think would be copywrited. But anyway, [one was to install docker on digital ocean](https://thematrix.dev/install-docker-and-docker-compose-on-ubuntu-20-04/) and [the other was to install wireguard on digital ocean](https://thematrix.dev/setup-wireguard-vpn-server-with-docker/).
+
+## 1. Getting Started with Digital Ocean
+Sicne I didn't have a Digital Ocean account, the first thing I had to do was make one, I used the [provided link](https://m.do.co/c/4d7f4ff9cfe4) to get some credit to start off with, however that is not necessary and just going to [digitalocean.com](https://digitalocean.com) will get you there. It was a simple matter of selecting one of my various emails to sign up with. I'll be honest, the first time I did it I tried to use my github account, but when I was required to put in a card number I thought the link hadn't worked, so I exited out and started account. Turns out you have to give a card number no matter what, which is total marlarkey in my opinion but whatever. Make an account and everything, add a card or PayPal and you're good to go.
+
+## 2. Making an Ubuntu Droplet (VM)
+Now that you are into Digital Ocean, at the top right there should be a Create button in green with a drop down, hit that and select Droplet which is DO's name for a cloud server, select Ubuntu (it should be default), then make sure the plan selected is Basic, the CPU option is Regular, and the cheapest option is selected. It should be $5/month. Next, choose a datacenter region, I just went with the default, New York. Then go down to where it says Authentication and either configure an SSH key or just add a root password, I just went with root password. Then just go ahead and create it, using the defaults for the rest or customizing if need be. Then, go into your newly created droplet and make sure the switch is turned to on. Then, to get into the console just click the little button at the top right and it should pop up and automatically sign in, giving you an ubuntu environment to use. 
+
+## 3. Installing Docker
+To actually get WireGuard working, you first need to install Docker, such a feat is extremely simple and can be boiled down to a couple of different commands to run in the Digitial Ocean pop-out console for your droplet. First install the necessary packages and tools with
+
+```sudo apt install apt-transport-https ca-certificates curl software-properties-common -y```
+
+Then add a Docker key with
+
+```curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -```
+
+Then you need to add a docker repo, of which there are three. if you are running a 32 bit or 64 bit OS, use
+```
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+   ```
+If you are running an ARM 32 bit use
+```
+sudo add-apt-repository \
+   "deb [arch=armhf] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+   ```
+And if you are running an ARM 64 bit use
+```
+sudo add-apt-repository \
+   "deb [arch=arm64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+```
+With that figured out, switch the correct repo with
+
+```apt-cache policy docker-ce```
+
+and then actually install Docker with 
+
+```sudo apt install docker-ce -y```
+
+Last but not least you need to install Docker-Compose as well just to make it way easier to use, so do so with 
+
+```sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose```
+
+and set permissions with 
+```sudo chmod +x /usr/local/bin/docker-compose```
+
+## 4. WireGuard on Phone
+Now that you have Docker on your Digital Ocean server, you can begin to set up WireGuard, a VPN that can work on mobile or on desktop. The first thing you need to do is to make a wireguard directory 
+
+```mkdir -p ~/wireguard/```
+
+and you need to create a docker-compose file in siad directory so run 
+
+```
+mkdir -p ~/wireguard/config/
+nano ~/wireguard/docker-compose.yml
+```
+
+This will begin editing the docker-compose file so copy paste the following into it 
+
+```
+version: '3.8'
+services:
+  wireguard:
+    container_name: wireguard
+    image: linuxserver/wireguard
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Hong_Kong
+      - SERVERURL=1.2.3.4
+      - SERVERPORT=51820
+      - PEERS=pc1,pc2,phone1
+      - PEERDNS=auto
+      - INTERNAL_SUBNET=10.0.0.0
+    ports:
+      - 51820:51820/udp
+    volumes:
+      - type: bind
+        source: ./config/
+        target: /config/
+      - type: bind
+        source: /lib/modules
+        target: /lib/modules
+    restart: always
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+```
+
+Before saving, there are a few changes to make depending on certain preferences. The line makred TZ refers to timezone, so I changed it from Asia/Hong_Kong to America/Chicago, but there is an extensive list of options [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). More importantly, the SERVERURL line refers to the server IP address, which needs to be whatever your Digital Ocean Droplet says, it should be easy to find and should be an IPv4. I left the PEERS as is, you can edit it to use your own user or whatever you'd like, it does effect the next step when we do desktop version but its not super important. After everything is squared away, just go ahead and write the file out and exit.
+
+Then, you should be able to actually start WireGuard with 
+
+```
+cd ~/wireguard/
+docker-compose up -d
+```
+
+and it might take ages but eventually you should see something that says 'Creating WireGuard ... done' and you'll know you're good. After that, run 
+
+```docker-compose logs -f wireguard```
+
+to pop up some logs and a couple of QR codes, based on whatever peers you used. To acutally use them, however, you'll need to download the WireGuard app on your phone, so do that, then hit the big plus to add a new VPN and select "Create from QR code" and just scan the one you just got, it should all immediately work, and you can activate it with the switch in the app. Most phones will have a popup that says you're using a VPN when you turn it on, this is what mine looks like when I use it: ![8580FDE9-2B19-4042-BCEA-475CAD02DB72](https://user-images.githubusercontent.com/16856766/143732213-fa3242da-a62e-4145-bab6-2379788632d4.png)
+
+## 5. WireGuard on Desktop
+In order to actually get WireGuard on desktop you need to do some interesting stuff, but it is not terribly difficult. The first thing you need is the contents of the config file that was created when you ran the docker-compose for wireguard. In the wireguard directory of your Ubuntu from Digital Ocean (which you should still be from the last step) run 
+```
+cd config
+ls
+```
+to show the contents of the config directory, the notable ones should be whatever peers you set up in the previous step, for example I have several directories, three of which are peer_pc1, peer_pc2, and peer_phone1. navigate into one of them (I don't think it really matters but I used peer_pc1 with ```cd peer_pc1```). Then if you ```ls``` again you should see a .conf file with the same name as the peer, for example I have peer_pc1.conf. Run ```cat peer.conf``` where 'peer' is whatever peer you are using, again I sued ```cat peer_pc1.conf```. The contents of mine look like the following:
+
+```
+[Interface]
+Address = 10.0.0.2
+PrivateKey = wO3hW9yt9xBh2+nl8V0FmX3zHHJuxqvAm52LjepJsVw=
+ListenPort = 51820
+DNS = 10.0.0.1
+
+[Peer]
+PublicKey = zRNxobkIVPHfCXg0b1TiXxYLpYfh5Js9aAou2ha3YAA=
+Endpoint = 104.131.103.53:51820
+AllowedIPs = 0.0.0.0/0, ::/0
+```
+Copy all of yours, then back in your original desktop environment (not your Digital Ocean server) make a text file, paste the contents, then save it as a .conf file. Last but not least, you need to download WireGuard for desktop so go [here](https://www.wireguard.com/install/) and do so. With that all set up and the application running, click 'Add Tunnel' at the bottom left and select the .conf file you just saved. With that imported, you should just be able to activate it and have it work. Most PCs will have a notification that you turned on a VPN when you do, but to check go to IPLeak.net with the VPN turned off to check your normal IP and location, then turn the VPN on and refresh, checking to see if they both changed. This is what mine looks like: ![ipleak](https://user-images.githubusercontent.com/16856766/143732529-704a7d30-3d01-4a2c-a744-84c58adc1781.png)
+
+With that done, you should be good to go to use a VPN on your phone or on your computer, all through Digital Ocean!
+
+
+_______________________________________________________________________________________________________________________________________________________________________________
+
 # WordPress with Docker (Arch is Below)
 This is a write up of the steps I took to install Docker on an Ubuntu VM and then install WordPress via a Docker Container. The main website I used as a tutorial was from [Hostinger Tutorials](https://www.hostinger.com/tutorials/run-docker-wordpress). It had extremely easy steps to follow and worked perfectly the first time I tried it. Before I found that site, however, I had tried to do the PieHole install with [this](https://www.geeksforgeeks.org/create-your-own-secure-home-network-using-pi-hole-and-docker/) tutorial from Geeks For Geeks but ran into some problems with Port 53 being used, and abandoned it for WordPress. For the Docker install itself I just used the Powerpoint provided to us on Harvey
 
